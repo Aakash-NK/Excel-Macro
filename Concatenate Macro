@@ -1,0 +1,35 @@
+Sub ConcatenateAndClean()
+    Dim cell As Range
+    Dim firstCell As Range
+    Dim concatenatedText As String
+    
+    ' Ensure at least one cell is selected
+    If Selection.Cells.Count > 1 Then
+        Set firstCell = Selection.Cells(1, 1)
+        
+        ' Concatenate all selected cells into a single string
+        For Each cell In Selection
+            If cell.Value <> "" Then
+                If concatenatedText = "" Then
+                    concatenatedText = cell.Value
+                Else
+                    concatenatedText = concatenatedText & " " & cell.Value
+                End If
+            End If
+        Next cell
+        
+        ' Remove extra spaces (leading, trailing, and multiple spaces)
+        concatenatedText = WorksheetFunction.Trim(concatenatedText)
+        
+        ' Place the cleaned, concatenated result in the first cell
+        firstCell.Value = concatenatedText
+        
+        ' Blank out all other cells in the selection
+        For Each cell In Selection
+            If Not cell.Address = firstCell.Address Then
+                cell.ClearContents
+            End If
+        Next cell
+    Else
+    End If
+End Sub
